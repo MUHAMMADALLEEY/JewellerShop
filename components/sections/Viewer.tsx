@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -68,7 +68,8 @@ const pieces: Piece[] = [
 
 export default function Viewer() {
   const [active, setActive] = useState<ViewerPiece>("ring-diamond");
-  const piece = pieces.find((p) => p.id === active)!;
+  const piece = useMemo(() => pieces.find((p) => p.id === active)!, [active]);
+  const handleSelect = useCallback((id: ViewerPiece) => setActive(id), []);
 
   return (
     <section
@@ -110,24 +111,7 @@ export default function Viewer() {
             {/* Thumbnail strip */}
             <div className="mt-6 grid grid-cols-4 gap-3">
               {pieces.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => setActive(p.id)}
-                  data-hover
-                  className={`group relative aspect-square overflow-hidden border transition-all duration-500 ${
-                    active === p.id
-                      ? "border-gold bg-gold/10"
-                      : "border-gold/10 hover:border-gold/50"
-                  }`}
-                >
-                  <span
-                    className={`absolute inset-0 flex items-center justify-center text-display text-xl italic transition-colors ${
-                      active === p.id ? "text-gold" : "text-cream/40 group-hover:text-cream/70"
-                    }`}
-                  >
-                    {p.name.charAt(0)}
-                  </span>
-                </button>
+                <Thumb key={p.id} piece={p} active={active === p.id} onSelect={handleSelect} />
               ))}
             </div>
           </div>
@@ -188,3 +172,32 @@ export default function Viewer() {
     </section>
   );
 }
+
+const Thumb = ({
+  piece,
+  active,
+  onSelect,
+}: {
+  piece: Piece;
+  active: boolean;
+  onSelect: (id: ViewerPiece) => void;
+}) => {
+  const onClick = useCallback(() => onSelect(piece.id), [piece.id, onSelect]);
+  return (
+    <button
+      onClick={onClick}
+      data-hover
+      className={`group relative aspect-square overflow-hidden border transition-all duration-500 ${
+        active ? "border-gold bg-gold/10" : "border-gold/10 hover:border-gold/50"
+      }`}
+    >
+      <span
+        className={`absolute inset-0 flex items-center justify-center text-display text-xl italic transition-colors ${
+          active ? "text-gold" : "text-cream/40 group-hover:text-cream/70"
+        }`}
+      >
+        {piece.name.charAt(0)}
+      </span>
+    </button>
+  );
+};

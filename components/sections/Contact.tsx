@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -29,21 +29,26 @@ export default function Contact() {
     formState: { errors },
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (data: FormValues) => {
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) throw new Error();
-      setStatus("sent");
-      reset();
-    } catch {
-      setStatus("error");
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: FormValues) => {
+      setStatus("sending");
+      try {
+        const res = await fetch("/api/inquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error();
+        setStatus("sent");
+        reset();
+      } catch {
+        setStatus("error");
+      }
+    },
+    [reset]
+  );
+
+  const resetForm = useCallback(() => setStatus("idle"), []);
 
   return (
     <section
@@ -130,7 +135,7 @@ export default function Contact() {
                     Your enquiry is on our hands and our atelier. We will reply within two working days.
                   </p>
                   <button
-                    onClick={() => setStatus("idle")}
+                    onClick={resetForm}
                     className="btn-ghost-gold mt-10"
                     data-hover
                   >

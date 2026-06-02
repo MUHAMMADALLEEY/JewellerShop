@@ -21,18 +21,22 @@ export default function GoldDust() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Respect prefers-reduced-motion — no animated dust if the user opted out
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const resize = () => {
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener("resize", resize);
 
-    const COUNT = window.innerWidth < 768 ? 38 : 90;
+    const COUNT = window.innerWidth < 768 ? 28 : 65;
     const particles: Particle[] = Array.from({ length: COUNT }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -44,7 +48,10 @@ export default function GoldDust() {
     }));
 
     let frame = 0;
+    let running = true;
+
     const tick = () => {
+      if (!running) return;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       for (const p of particles) {
         p.x += p.vx;
@@ -68,9 +75,23 @@ export default function GoldDust() {
     };
     frame = requestAnimationFrame(tick);
 
+    // Pause when the tab loses focus — saves battery + stops draining cycles
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(frame);
+      } else if (!running) {
+        running = true;
+        frame = requestAnimationFrame(tick);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
+      running = false;
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

@@ -64,7 +64,7 @@ export default function Necklace({ spin = true, speed = 0.25 }: { spin?: boolean
         <octahedronGeometry args={[0.6, 0]} />
         <MeshTransmissionMaterial
           backside
-          samples={6}
+          samples={4}
           thickness={1}
           roughness={0}
           transmission={1}

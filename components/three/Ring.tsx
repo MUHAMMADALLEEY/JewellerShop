@@ -136,16 +136,15 @@ export default function Ring({
           <octahedronGeometry args={[0.6, 0]} />
           <MeshTransmissionMaterial
             backside
-            samples={6}
+            samples={4}
             thickness={1.2}
             roughness={0}
             transmission={1}
             ior={2.4}
             chromaticAberration={0.06}
             anisotropy={0.3}
-            distortion={0.1}
+            distortion={0.08}
             distortionScale={0.4}
-            temporalDistortion={0.1}
             color={gemColor}
             attenuationDistance={0.6}
             attenuationColor={gemColor}

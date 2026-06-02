@@ -35,7 +35,7 @@ export default function Earring({ spin = true, speed = 0.4 }: { spin?: boolean; 
         <octahedronGeometry args={[0.6, 0]} />
         <MeshTransmissionMaterial
           backside
-          samples={6}
+          samples={4}
           thickness={1.4}
           roughness={0}
           transmission={1}

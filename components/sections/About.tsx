@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import SectionLabel from "@/components/ui/SectionLabel";
+import { NOIR_BLUR } from "@/lib/imageBlur";
 
 const GemBackdrop = dynamic(() => import("@/components/three/GemBackdrop"), {
   ssr: false,
@@ -48,6 +49,10 @@ export default function About() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
+                  unoptimized
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL={NOIR_BLUR}
                 />
               </motion.div>
               <div className="absolute inset-0 bg-gradient-to-tr from-noir/70 via-transparent to-noir/30" />

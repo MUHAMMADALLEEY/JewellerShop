@@ -138,7 +138,7 @@ export default function HaloRing({
         <mesh key={`halo-${i}`} position={d.pos} rotation={d.rot} scale={0.09}>
           <octahedronGeometry args={[1, 0]} />
           <MeshTransmissionMaterial
-            samples={4}
+            samples={3}
             thickness={0.4}
             roughness={0}
             transmission={1}
@@ -170,14 +170,14 @@ export default function HaloRing({
           <octahedronGeometry args={[0.6, 0]} />
           <MeshTransmissionMaterial
             backside
-            samples={8}
+            samples={5}
             thickness={1.6}
             roughness={0}
             transmission={1}
             ior={2.42}
             chromaticAberration={0.08}
             anisotropy={0.3}
-            distortion={0.1}
+            distortion={0.08}
             distortionScale={0.4}
             color="#ffffff"
             attenuationDistance={0.5}
