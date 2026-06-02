@@ -79,7 +79,7 @@ export default function ProductViewer({ piece }: { piece: ViewerPiece }) {
         maxPolarAngle={Math.PI / 1.6}
       />
 
-      <EffectComposer multisampling={0} disableNormalPass>
+      <EffectComposer multisampling={0} enableNormalPass={false}>
         <Bloom
           intensity={0.6}
           luminanceThreshold={0.7}

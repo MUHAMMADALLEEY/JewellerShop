@@ -15,6 +15,8 @@ import * as THREE from "three";
 import Ring from "./Ring";
 import OrbitalGems from "./OrbitalGems";
 
+const CA_OFFSET = new THREE.Vector2(0.0008, 0.0008);
+
 function CameraDrift() {
   const ref = useRef<THREE.PerspectiveCamera>(null);
   useFrame(({ mouse, clock }) => {
@@ -83,7 +85,7 @@ export default function HeroScene() {
         color="#000000"
       />
 
-      <EffectComposer multisampling={0} disableNormalPass>
+      <EffectComposer multisampling={0} enableNormalPass={false}>
         <Bloom
           intensity={0.95}
           luminanceThreshold={0.6}
@@ -92,7 +94,7 @@ export default function HeroScene() {
         />
         <ChromaticAberration
           blendFunction={BlendFunction.NORMAL}
-          offset={[0.0008, 0.0008]}
+          offset={CA_OFFSET}
           radialModulation={false}
           modulationOffset={0}
         />

@@ -52,7 +52,7 @@ export default function GemBackdrop() {
         <Environment preset="studio" environmentIntensity={1.1} />
       </Suspense>
 
-      <EffectComposer multisampling={0} disableNormalPass>
+      <EffectComposer multisampling={0} enableNormalPass={false}>
         <Bloom intensity={1.1} luminanceThreshold={0.55} luminanceSmoothing={0.4} mipmapBlur />
       </EffectComposer>
     </Canvas>

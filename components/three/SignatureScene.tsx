@@ -91,7 +91,7 @@ export default function SignatureScene() {
         color="#000000"
       />
 
-      <EffectComposer multisampling={0} disableNormalPass>
+      <EffectComposer multisampling={0} enableNormalPass={false}>
         <Bloom intensity={1.05} luminanceThreshold={0.55} luminanceSmoothing={0.4} mipmapBlur />
         <Vignette eskil={false} offset={0.2} darkness={0.78} />
       </EffectComposer>
