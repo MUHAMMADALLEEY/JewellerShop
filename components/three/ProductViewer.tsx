@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Suspense, useMemo, useRef, type MutableRefObject } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Environment,
   ContactShadows,
@@ -9,10 +9,12 @@ import {
   PerspectiveCamera,
 } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import * as THREE from "three";
 import Ring from "./Ring";
 import Necklace from "./Necklace";
 import Earring from "./Earring";
 import { useCanvasActive } from "@/lib/useCanvasActive";
+import { useScrollFactor, easeOutScroll } from "@/lib/useScrollFactor";
 
 export type ViewerPiece = "ring-diamond" | "ring-emerald" | "necklace" | "earring";
 
@@ -26,7 +28,7 @@ const piecePresets: Record<
   earring: { camera: [0, 0.0, 3.4], fov: 40 },
 };
 
-function Piece({ piece }: { piece: ViewerPiece }) {
+function PieceMesh({ piece }: { piece: ViewerPiece }) {
   switch (piece) {
     case "ring-diamond":
       return <Ring spin={false} metal="gold" gem="diamond" />;
@@ -39,8 +41,34 @@ function Piece({ piece }: { piece: ViewerPiece }) {
   }
 }
 
+/** Wraps the piece in a scroll-driven group — tilt and scale follow scroll. */
+function ScrolledPiece({
+  piece,
+  scrollFactor,
+}: {
+  piece: ViewerPiece;
+  scrollFactor: MutableRefObject<number>;
+}) {
+  const groupRef = useRef<THREE.Group>(null);
+  useFrame((_, dt) => {
+    if (!groupRef.current) return;
+    const sp = easeOutScroll(scrollFactor.current);
+    // Continuous spin that scales with scroll progress
+    groupRef.current.rotation.y += dt * (0.2 + sp * 1.4);
+    // Tilt forward and scale up as you scroll into the section
+    groupRef.current.rotation.x = sp * 0.35;
+    groupRef.current.scale.setScalar(1 + sp * 0.25);
+  });
+  return (
+    <group ref={groupRef}>
+      <PieceMesh piece={piece} />
+    </group>
+  );
+}
+
 export default function ProductViewer({ piece }: { piece: ViewerPiece }) {
   const { ref, frameloop } = useCanvasActive();
+  const scrollFactor = useScrollFactor(ref);
   const preset = useMemo(() => piecePresets[piece], [piece]);
 
   return (
@@ -60,7 +88,7 @@ export default function ProductViewer({ piece }: { piece: ViewerPiece }) {
         <pointLight position={[0, -2, 2]} intensity={0.5} color="#ffd27a" />
 
         <Suspense fallback={null}>
-          <Piece piece={piece} />
+          <ScrolledPiece piece={piece} scrollFactor={scrollFactor} />
           <Environment preset="studio" environmentIntensity={1} />
         </Suspense>
 

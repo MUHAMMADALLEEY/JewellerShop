@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useRef, useMemo, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Environment,
@@ -14,27 +14,54 @@ import * as THREE from "three";
 import HaloRing from "./HaloRing";
 import OrbitalGems from "./OrbitalGems";
 import { useCanvasActive } from "@/lib/useCanvasActive";
+import { useScrollFactor, easeOutScroll } from "@/lib/useScrollFactor";
 
 const ORBIT_OFFSET: [number, number, number] = [0, 0.4, 0];
 const SPARKLE_SCALE: [number, number, number] = [7, 5, 7];
 
-function ScrollDrift() {
+type ScrollProps = { scrollFactor: MutableRefObject<number> };
+
+function ScrollDrift({ scrollFactor }: ScrollProps) {
   const ref = useRef<THREE.PerspectiveCamera>(null);
   const lookTarget = useMemo(() => new THREE.Vector3(0, 0.45, 0), []);
   useFrame(({ mouse, clock }) => {
     if (!ref.current) return;
     const t = clock.getElapsedTime();
+    const sp = easeOutScroll(scrollFactor.current);
     const tx = mouse.x * 0.4 + Math.sin(t * 0.2) * 0.06;
-    const ty = 0.55 + mouse.y * 0.22 + Math.cos(t * 0.24) * 0.04;
+    // Scroll-driven dolly-in + tilt-up
+    const ty = 0.55 + mouse.y * 0.22 + Math.cos(t * 0.24) * 0.04 + sp * 0.45;
     ref.current.position.x += (tx - ref.current.position.x) * 0.05;
     ref.current.position.y += (ty - ref.current.position.y) * 0.05;
+    ref.current.position.z = 4.0 - sp * 1.2; // closer to the gem when in view
+    lookTarget.y = 0.45 + sp * 0.25;
     ref.current.lookAt(lookTarget);
   });
   return <PerspectiveCamera ref={ref} makeDefault position={[0, 0.55, 4.0]} fov={36} />;
 }
 
+/** Scrolling the section spins + scales the halo ring. */
+function ScrolledHaloRing({ scrollFactor }: ScrollProps) {
+  const groupRef = useRef<THREE.Group>(null);
+  useFrame((_, dt) => {
+    if (!groupRef.current) return;
+    const sp = easeOutScroll(scrollFactor.current);
+    groupRef.current.rotation.y += dt * (0.22 + sp * 1.8);
+    groupRef.current.rotation.x = sp * 0.3;
+    groupRef.current.scale.setScalar(1 + sp * 0.3);
+  });
+  return (
+    <group ref={groupRef}>
+      <Float speed={0.9} rotationIntensity={0.18} floatIntensity={0.45}>
+        <HaloRing spin speed={0.22} />
+      </Float>
+    </group>
+  );
+}
+
 export default function SignatureScene() {
   const { ref, frameloop } = useCanvasActive();
+  const scrollFactor = useScrollFactor(ref);
 
   return (
     <div ref={ref} className="absolute inset-0">
@@ -45,7 +72,7 @@ export default function SignatureScene() {
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         className="!absolute inset-0"
       >
-        <ScrollDrift />
+        <ScrollDrift scrollFactor={scrollFactor} />
 
         {/* Lights — slightly warmer, more dramatic than Hero */}
         <ambientLight intensity={0.2} />
@@ -68,9 +95,7 @@ export default function SignatureScene() {
         />
 
         <Suspense fallback={null}>
-          <Float speed={0.9} rotationIntensity={0.18} floatIntensity={0.45}>
-            <HaloRing spin speed={0.22} />
-          </Float>
+          <ScrolledHaloRing scrollFactor={scrollFactor} />
 
           {/* Outer orbital gems at a wider radius */}
           <group position={ORBIT_OFFSET}>

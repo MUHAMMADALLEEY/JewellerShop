@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import ScrollCue from "@/components/ui/ScrollCue";
 
-const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
+// Vanilla Three.js port of HeroScene — no @react-three/fiber.
+// The other scenes (Viewer, Signature, GemBackdrop) still use R3F for now.
+const HeroScene = dynamic(() => import("@/components/three/HeroSceneVanilla"), {
   ssr: false,
   loading: () => (
     <div className="absolute inset-0 flex items-center justify-center">

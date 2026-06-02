@@ -6,6 +6,7 @@ import SmoothScroll from "@/components/providers/SmoothScroll";
 import Nav from "@/components/ui/Nav";
 import Cursor from "@/components/ui/Cursor";
 import GoldDust from "@/components/ui/GoldDust";
+import GlobalScene from "@/components/three/GlobalScene";
 
 const display = Cormorant_Garamond({
   subsets: ["latin"],
@@ -43,6 +44,8 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="bg-noir text-cream antialiased">
         <SmoothScroll>
+          {/* Persistent fixed 3D layer — gold gems drift across the whole page */}
+          <GlobalScene />
           <Cursor />
           <GoldDust />
           <Nav />

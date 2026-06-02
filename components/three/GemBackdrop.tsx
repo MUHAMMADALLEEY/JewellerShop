@@ -1,18 +1,23 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, MeshTransmissionMaterial, Float, Sparkles } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { useCanvasActive } from "@/lib/useCanvasActive";
+import { useScrollFactor, easeOutScroll } from "@/lib/useScrollFactor";
 
-function SpinningGem() {
+function SpinningGem({ scrollFactor }: { scrollFactor: MutableRefObject<number> }) {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((_, dt) => {
     if (!ref.current) return;
-    ref.current.rotation.y += dt * 0.35;
-    ref.current.rotation.x += dt * 0.12;
+    const sp = easeOutScroll(scrollFactor.current);
+    // Spin accelerates and the gem grows + tumbles as you scroll the section
+    ref.current.rotation.y += dt * (0.35 + sp * 2.2);
+    ref.current.rotation.x += dt * (0.12 + sp * 0.8);
+    const s = 1.1 + sp * 0.6;
+    ref.current.scale.setScalar(s);
   });
   return (
     <mesh ref={ref} scale={1.1}>
@@ -35,6 +40,7 @@ function SpinningGem() {
 
 export default function GemBackdrop() {
   const { ref, frameloop } = useCanvasActive();
+  const scrollFactor = useScrollFactor(ref);
 
   return (
     <div ref={ref} className="absolute inset-0">
@@ -51,7 +57,7 @@ export default function GemBackdrop() {
 
         <Suspense fallback={null}>
           <Float speed={1.4} rotationIntensity={0.6} floatIntensity={1.2}>
-            <SpinningGem />
+            <SpinningGem scrollFactor={scrollFactor} />
           </Float>
           <Sparkles count={24} size={2} scale={[4, 4, 4]} speed={0.4} color="#f3d77a" opacity={0.7} />
           <Environment preset="studio" environmentIntensity={1.1} />
