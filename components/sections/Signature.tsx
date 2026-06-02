@@ -67,7 +67,7 @@ Owner              </div>
             <h2 className="text-display text-5xl leading-[1] md:text-7xl">
               Signed in <span className="italic font-light gold-gradient-text">gold</span>
               <br />
-              by Muhammad <span className="italic font-light">Arshad</span>.
+              by  <span className="italic font-light"></span>.
             </h2>
 
             <div className="space-y-5 text-base font-light leading-relaxed text-cream/70 md:text-lg">
