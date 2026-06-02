@@ -62,7 +62,7 @@ export default function Collection() {
         {/* Grid */}
         <motion.div
           layout
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 md:[grid-auto-rows:280px] lg:grid-cols-4 lg:[grid-auto-rows:320px]"
+          className="grid grid-cols-1 gap-4 [grid-auto-rows:360px] sm:grid-cols-2 sm:[grid-auto-rows:260px] md:grid-cols-3 md:gap-6 md:[grid-auto-rows:280px] lg:grid-cols-4 lg:[grid-auto-rows:320px]"
         >
           <AnimatePresence mode="popLayout">
             {items.map((item, i) => (
