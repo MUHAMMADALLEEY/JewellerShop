@@ -59,8 +59,7 @@ export default function Contact() {
               Commission a <span className="italic font-light gold-gradient-text">piece</span>.
             </h2>
             <p className="max-w-md text-base font-light leading-relaxed text-cream/70 md:text-lg">
-              Every Madina Jewellers piece begins with a quiet conversation with Muhammad Arshad
-              and his atelier. Tell us the moment, and we will draw the heirloom that meets it.
+              Every Madina Jewellers piece begins with a quiet conversation. Tell us the moment, and we will draw the heirloom that meets it.
             </p>
 
             <div className="hairline" />
@@ -128,7 +127,7 @@ export default function Contact() {
                 >
                   <div className="text-display text-6xl italic text-gold">Thank you.</div>
                   <p className="mt-6 max-w-sm text-base font-light text-cream/70">
-                    Your enquiry is in the hands of Muhammad Arshad and our atelier. We will reply within two working days.
+                    Your enquiry is on our hands and our atelier. We will reply within two working days.
                   </p>
                   <button
                     onClick={() => setStatus("idle")}
@@ -225,7 +224,7 @@ export default function Contact() {
         <div className="hairline mt-32" />
         <div className="mt-10 flex flex-col items-center justify-between gap-4 text-xs font-light text-cream/40 md:flex-row">
           <div className="text-eyebrow text-gold/60">
-            Madina Jewellers · Muhammad Arshad · MMXXIV
+            Madina Jewellers 
           </div>
           <div>Crafted with heritage. Delivered to the world.</div>
         </div>

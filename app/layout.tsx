@@ -25,11 +25,11 @@ const body = Inter({
 export const metadata: Metadata = {
   title: "Madina Jewellers — Timeless Gold, Forever Yours",
   description:
-    "A house of handcrafted fine jewellery, founded by Muhammad Arshad. Every piece sculpted in 22K gold by master goldsmiths.",
+    "A house of handcrafted fine jewellery. Every piece sculpted in 22K gold by master goldsmiths.",
   openGraph: {
     title: "Madina Jewellers",
     description:
-      "Handcrafted 22K gold jewellery by Muhammad Arshad. Heritage craftsmanship for the modern soul.",
+      "Handcrafted 24K gold jewellery. Heritage craftsmanship for the modern soul.",
     type: "website",
   },
 };

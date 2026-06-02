@@ -54,8 +54,7 @@ export default function Signature() {
                 — signed in gold —
               </div>
               <div className="text-display mt-2 text-3xl italic text-gold md:text-4xl">
-                Muhammad Arshad
-              </div>
+Owner              </div>
             </div>
           </div>
         </div>
@@ -75,7 +74,7 @@ export default function Signature() {
               <p>
                 Every piece that leaves the Madina Jewellers atelier carries a hidden mark — three
                 tiny notches struck on the inner band by{" "}
-                <span className="text-cream">Muhammad Arshad</span> himself. A private signature.
+                <span className="text-cream">Owner</span> himself. A private signature.
                 A quiet vow.
               </p>
               <p>

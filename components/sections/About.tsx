@@ -72,7 +72,7 @@ export default function About() {
                 Gold remembers every hand that touches it. We work slowly, so the memory is a kind one.
               </p>
               <div className="text-eyebrow mt-4 text-gold/80">
-                Muhammad Arshad · Master Goldsmith & Founder
+                 Master Goldsmith & Founder
               </div>
             </motion.div>
           </div>
@@ -94,7 +94,7 @@ export default function About() {
 
               <div className="space-y-5 text-base font-light leading-relaxed text-cream/70 md:text-lg">
                 <p>
-                  Founded by master goldsmith Muhammad Arshad — three generations of artisans, one
+                  Founded by master goldsmith — three generations of artisans, one
                   workshop, one philosophy. We do not chase trends — we wait for them to pass, then
                   make pieces that outlast them.
                 </p>
