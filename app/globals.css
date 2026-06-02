@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --noir: #0a0a0a;
+  --noir-soft: #141414;
+  --noir-warm: #1a1612;
+  --gold: #d4af37;
+  --gold-soft: #b8943a;
+  --gold-deep: #8c6e2a;
+  --gold-glow: #f3d77a;
+  --cream: #f5ecd9;
+  --cream-muted: #8a8275;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  background: var(--noir);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--noir);
+}
+
+/* Custom cursor */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"] {
+    cursor: none;
+  }
+}
+
+@layer components {
+  .text-display {
+    font-family: var(--font-display), serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+
+  .text-eyebrow {
+    font-family: var(--font-body), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--gold);
+  }
+
+  .gold-gradient-text {
+    background: linear-gradient(
+      120deg,
+      #b8943a 0%,
+      #d4af37 25%,
+      #f3d77a 50%,
+      #d4af37 75%,
+      #8c6e2a 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s linear infinite;
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.45) 50%,
+      transparent
+    );
+  }
+
+  .btn-gold {
+    @apply relative inline-flex items-center gap-3 px-7 py-3.5 text-sm font-light uppercase tracking-[0.3em] text-noir transition-all duration-500;
+    background: linear-gradient(120deg, #d4af37, #f3d77a, #d4af37);
+    background-size: 200% 100%;
+  }
+  .btn-gold:hover {
+    background-position: 100% 0;
+    box-shadow: 0 0 32px rgba(212, 175, 55, 0.35);
+  }
+
+  .btn-ghost-gold {
+    @apply relative inline-flex items-center gap-3 px-7 py-3.5 text-sm font-light uppercase tracking-[0.3em] text-gold transition-all duration-500;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+  }
+  .btn-ghost-gold:hover {
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.08);
+    box-shadow: 0 0 24px rgba(212, 175, 55, 0.2);
+  }
+
+  .card-noir {
+    background: var(--noir-soft);
+    border: 1px solid rgba(212, 175, 55, 0.08);
+    transition: border-color 0.5s ease, transform 0.6s ease;
+  }
+  .card-noir:hover {
+    border-color: rgba(212, 175, 55, 0.45);
+  }
+}
+
+@layer utilities {
+  .bg-noir-radial {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.12), transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.06), transparent 50%),
+      var(--noir);
+  }
+  .mask-fade-y {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 0;
+}
